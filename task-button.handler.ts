@@ -1,13 +1,3 @@
-/**
- * TEST FILE — Intentional rule violations for ICA agent testing.
- * Simulates a Next Gen Store task button handler.
- *
- * Violations:
- *  - STERLING_CONF_002 : Hardcoded business values "ONLINE", "DEFAULT", "STORE"
- *  - STERLING_NAMING_002: XML/Document variables not prefixed (doc*, ele*, nl*)
- *  - STERLING_LOG_001  : Error log missing correlation identifier
- *  - STERLING_TXN_002  : Exception caught and silently discarded
- */
 
 import { Component } from '@angular/core';
 
@@ -19,7 +9,6 @@ export class TaskButtonHandler {
 
   handlePackAction(orderData: any): void {
 
-    // VIOLATION: STERLING_CONF_002 — hardcoded channel/enterprise values
     if (orderData.channel === "ONLINE" || orderData.enterpriseCode === "DEFAULT") {
       console.log("Routing to online packing queue");
     }
@@ -32,7 +21,6 @@ export class TaskButtonHandler {
   parseOrderXml(xmlString: string): void {
     const parser = new DOMParser();
 
-    // VIOLATION: STERLING_NAMING_002 — should be 'docOrder', 'eleOrderLine', 'nlItems'
     const orderDocument = parser.parseFromString(xmlString, "application/xml");
     const rootElement = orderDocument.documentElement;
     const lineItems = rootElement.getElementsByTagName("OrderLine");
@@ -48,8 +36,6 @@ export class TaskButtonHandler {
       // simulate API call
       this.callPackAPI(shipmentNo);
     } catch (error) {
-      // VIOLATION: STERLING_TXN_002 — error swallowed, no rethrow
-      // VIOLATION: STERLING_LOG_001 — no shipmentNo or correlationId in log
       console.error("Pack action failed.");
     }
   }
